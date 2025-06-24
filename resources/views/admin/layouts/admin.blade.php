@@ -7,6 +7,8 @@
     <title>{{ $title ?? 'Admin Dashboard' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('js/sweet-alert.js') }}"></script>
+
 
 </head>
 <body class="bg-gray-100 text-gray-800">

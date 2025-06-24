@@ -42,12 +42,13 @@ class FormController extends Controller
     {
         $validated = $request->validated();
         $forms = $this->formRepo->create($validated);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Form created successfully.',
-            'data' => new FormResource($forms),
-        ]);
-        dd($forms);
+        
+        return returnJsonResponse(
+            'success',
+            'Form created successfully.',
+            new FormResource($forms),
+            201
+        );
     }
 
     /**
@@ -76,7 +77,12 @@ class FormController extends Controller
         $validated = $request->validated();
 
         $updatedForm = $this->formRepo->updateForm($form, $validated);
-        dd($updatedForm);
+        return returnJsonResponse(
+            'success',
+            'Form updated successfully.',
+            new FormResource($updatedForm),
+            200
+        );
     }
 
     /**
@@ -85,7 +91,12 @@ class FormController extends Controller
     public function deleteForm(Form $form)
     {
         $this->formRepo->deleteForm($form);
-        return response()->json(['message' => 'Form deleted successfully']);
+        return returnJsonResponse(
+            'success',
+            'Form deleted successfully.',
+            null,
+            200
+        );
     }
 
 
@@ -96,7 +107,12 @@ class FormController extends Controller
     {
         $formField = FormField::findOrFail($fieldId);
         $this->formRepo->deleteFormField($formField);
-        return response()->json(['message' => 'Form deleted successfully']);
+        return returnJsonResponse(
+            'success',
+            'Form field deleted successfully.',
+            null,
+            200
+        );
     }
     
 }

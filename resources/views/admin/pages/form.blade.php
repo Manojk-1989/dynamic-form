@@ -117,10 +117,11 @@
             </td>
             <td class="border p-2">
                 <select name="field_type[]" class="w-full border rounded px-2 py-1 field-type">
+                    <option value="">Select Field Type</option>
                     <option value="text">Text</option>
                     <option value="number">Number</option>
                     <option value="textarea">Textarea</option>
-                    <option value="select">Select (Dropdown)</option>
+                    <option value="select">Select </option>
                     <option value="radio">Radio</option>
                     <option value="checkbox">Checkbox</option>
                 </select>
