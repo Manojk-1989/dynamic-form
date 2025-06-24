@@ -53,10 +53,10 @@
         @csrf
 
 
-        <input type="email" class="email" name="email" placeholder="Email" >
+        <input type="email" class="email" name="email" placeholder="Email" required>
         <span class="text-danger error-text email_error"></span>
 
-        <input type="password" class="password" name="password" placeholder="Password" >
+        <input type="password" class="password" name="password" placeholder="Password" required>
         <span class="text-danger error-text password_error"></span>
         <span class="text-danger error-text invalid_credentials_error"></span>
 

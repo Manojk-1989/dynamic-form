@@ -26,13 +26,22 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr) {
-                let errors = xhr.responseJSON.errors;
-                let errorHtml = '<div class="error"><ul>';
-                $.each(errors, function (key, value) {
-                    errorHtml += "<li>" + value[0] + "</li>";
-                });
-                errorHtml += "</ul></div>";
-                $("#message").html(errorHtml);
+                if (xhr.status === 422) {
+                    // Laravel validation or custom error
+                    const errors = xhr.responseJSON.errors;
+
+                    if (errors) {
+                        // Validation errors
+                        $.each(errors, function (key, value) {
+                            $("." + key.replace(/\./g, "_") + "_error").text(
+                                value[0]
+                            );
+                        });
+                    } else if (xhr.responseJSON.message) {
+                        // Custom message like "Invalid credentials"
+                        $(".password_error").text(xhr.responseJSON.message);
+                    }
+                }
             },
         });
     });
