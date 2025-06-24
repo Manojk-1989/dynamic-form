@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface FormRepositoryInterface
 {
-    public function all();
+    public function getAllForms();
     public function find($id);
     public function create(array $data);
     public function delete($id);

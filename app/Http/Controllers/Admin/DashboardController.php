@@ -4,13 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\FormBuilderRequest;
 use App\Interfaces\FormRepositoryInterface;
-use App\Http\Resources\FormResource;
-use App\Models\Form;
 
-class FormController extends Controller
+class DashboardController extends Controller
 {
+
     protected $formRepo;
 
     public function __construct(FormRepositoryInterface $formRepo)
@@ -22,9 +20,11 @@ class FormController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function showCreateForm()
+    public function index()
     {
-        return view('admin.pages.form');
+        $forms = $this->formRepo->getAllForms();
+        // dd($forms);
+        return view('admin.pages.dashboard', compact('forms'));
     }
 
     /**
@@ -38,16 +38,9 @@ class FormController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function createForm(FormBuilderRequest $request)
+    public function store(Request $request)
     {
-        $validated = $request->validated();
-        $forms = $this->formRepo->create($validated);
-        return response()->json([
-        'status' => 'success',
-        'message' => 'Form created successfully.',
-        'data' => new FormResource($forms),
-    ]);
-        dd($forms);
+        //
     }
 
     /**
@@ -61,11 +54,9 @@ class FormController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function editForm(Form $form)
+    public function edit(string $id)
     {
-        $form->load('fields');
-// dd($form);
-    return view('admin.pages.form', compact('form'));
+        //
     }
 
     /**

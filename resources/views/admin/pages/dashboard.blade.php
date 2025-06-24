@@ -1,23 +1,43 @@
 @extends('admin.layouts.admin')
 
 @section('content')
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="p-4 bg-white rounded shadow">
-            <h2 class="font-bold text-lg">Forms</h2>
-            <p class="text-gray-600 text-sm">Manage dynamic forms.</p>
-        </div>
-        <div class="p-4 bg-white rounded shadow">
-            <h2 class="font-bold text-lg">Submissions</h2>
-            <p class="text-gray-600 text-sm">View submitted data.</p>
-        </div>
-        <div class="p-4 bg-white rounded shadow">
-            <h2 class="font-bold text-lg">Users</h2>
-            <p class="text-gray-600 text-sm">Manage admin users.</p>
-        </div>
-    </div>
-    
-@endsection
-@section('scripts')
-<script src="{{ asset('page-js/admin/dashboard.js') }}"></script>
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-4">Forms List</h2>
 
+    <table class="w-full table-auto border-collapse border border-gray-300 mb-4">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="border px-3 py-2 text-left">ID</th>
+                <th class="border px-3 py-2 text-left">Title</th>
+                <th class="border px-3 py-2 text-left">Description</th>
+                <th class="border px-3 py-2 text-left">Fields Count</th>
+                <th class="border px-3 py-2 text-left">Created At</th>
+                <th class="border px-3 py-2 text-left">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($forms as $form)
+                <tr>
+                    <td class="border px-3 py-2">{{ $form->id }}</td>
+                    <td class="border px-3 py-2">{{ $form->title }}</td>
+                    <td class="border px-3 py-2">{{ $form->description }}</td>
+                    <td class="border px-3 py-2">{{ $form->fields_count }}</td>
+                    <td class="border px-3 py-2">{{ $form->created_at->format('Y-m-d') }}</td>
+                    <td class="border px-3 py-2">
+                    <a href="{{ route('admin.forms.edit', $form) }}" class="text-blue-600 hover:underline">Edit</a>
+                </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="border px-3 py-2 text-center text-gray-500">No forms available.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    {{-- Pagination links --}}
+    <div class="mt-4">
+        {{ $forms->links() }}
+    </div>
+</div>
 @endsection

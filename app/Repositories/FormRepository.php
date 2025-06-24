@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class FormRepository implements FormRepositoryInterface
 {
-    public function all()
+    // public function all()
+    // {
+    //     return Form::all();
+    // }
+    public function getAllForms()
     {
-        return Form::all();
+        return Form::withCount('fields')->latest()->paginate(10);
     }
 
     public function find($id)
