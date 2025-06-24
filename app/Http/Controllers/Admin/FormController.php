@@ -43,10 +43,10 @@ class FormController extends Controller
         $validated = $request->validated();
         $forms = $this->formRepo->create($validated);
         return response()->json([
-        'status' => 'success',
-        'message' => 'Form created successfully.',
-        'data' => new FormResource($forms),
-    ]);
+            'status' => 'success',
+            'message' => 'Form created successfully.',
+            'data' => new FormResource($forms),
+        ]);
         dd($forms);
     }
 
@@ -64,16 +64,19 @@ class FormController extends Controller
     public function editForm(Form $form)
     {
         $form->load('fields');
-// dd($form);
-    return view('admin.pages.form', compact('form'));
+        // dd($form);
+        return view('admin.pages.form', compact('form'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateForm(FormBuilderRequest $request, Form $form)
     {
-        //
+        $validated = $request->validated();
+
+        $updatedForm = $this->formRepo->updateForm($form, $validated);
+        dd($updatedForm);
     }
 
     /**
