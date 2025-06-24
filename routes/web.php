@@ -17,14 +17,14 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
-Route::middleware(['auth', 'is_admin'])->group(function () {
-    Route::get('/admin/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/form', [FormController::class, 'showCreateForm'])->name('admin.forms.index');
-    Route::post('/admin/form', [FormController::class, 'createForm'])->name('admin.forms.create');
-    Route::get('/admin/{form}/edit', [FormController::class, 'editForm'])->name('admin.forms.edit');
-    Route::put('/admin/{form}/update', [FormController::class, 'updateForm'])->name('admin.forms.update');
-    Route::delete('/admin/{form}/delete', [FormController::class, 'deleteForm'])->name('admin.forms.destroy');
-    Route::delete('/admin/{fieldId}/element-delete', [FormController::class, 'deleteFormElement'])->name('admin.form.element.destroy');
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
+    Route::get('dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('form', [FormController::class, 'showCreateForm'])->name('admin.forms.index');
+    Route::post('form', [FormController::class, 'createForm'])->name('admin.forms.create');
+    Route::get('/{form}/edit', [FormController::class, 'editForm'])->name('admin.forms.edit');
+    Route::put('/{form}/update', [FormController::class, 'updateForm'])->name('admin.forms.update');
+    Route::delete('/{form}/delete', [FormController::class, 'deleteForm'])->name('admin.forms.destroy');
+    Route::delete('/{fieldId}/element-delete', [FormController::class, 'deleteFormElement'])->name('admin.form.element.destroy');
 
 
 

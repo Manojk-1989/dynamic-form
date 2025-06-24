@@ -53,9 +53,13 @@
         @csrf
 
 
-        <input type="email" name="email" placeholder="Email" required>
+        <input type="email" class="email" name="email" placeholder="Email" >
+        <span class="text-danger error-text email_error"></span>
 
-        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" class="password" name="password" placeholder="Password" >
+        <span class="text-danger error-text password_error"></span>
+        <span class="text-danger error-text invalid_credentials_error"></span>
+
 
 
         <button type="submit">Login</button>
