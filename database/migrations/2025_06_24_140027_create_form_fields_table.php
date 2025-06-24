@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('form_fields', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('form_id')->constrained()->cascadeOnDelete();
+            $table->string('label');
+            $table->string('name_attribute')->unique()->nullable();
+            $table->string('id_attribute')->unique()->nullable();
+            $table->enum('element_type', ['text', 'number', 'textarea', 'select', 'radio', 'checkbox']);
+            $table->boolean('required')->default(false);
+            $table->json('options')->nullable()->comment('options as JSON array [{value, description}]');
             $table->timestamps();
         });
     }

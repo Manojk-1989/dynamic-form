@@ -67,8 +67,15 @@
                     <option value="checkbox">Checkbox</option>
                 </select>
             </td>
-            <td class="border p-2">
+            <!-- <td class="border p-2">
                 <input type="text" name="fields[][options]" class="w-full border rounded px-2 py-1 options-field" placeholder="Comma separated for Select/Radio/Checkbox">
+            </td> -->
+            <td class="border p-2">
+                <button type="button" class="btn-options-modal bg-gray-200 border rounded px-2 py-1 w-full text-left">
+                    Set Options
+                </button>
+                <input type="hidden" name="fields[][options]" class="options-hidden-input" />
+                <div class="options-summary text-sm text-gray-600 mt-1"></div>
             </td>
             <td class="border p-2 text-center">
                 <input type="checkbox" name="fields[][required]" value="1">
@@ -79,7 +86,7 @@
         </tr>
     </tbody>
 </table>
-
+@include('modals.form-element-value-modal')
 @endsection
 
 @section('scripts')
