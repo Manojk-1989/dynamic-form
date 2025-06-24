@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('required')->default(false);
             $table->json('options')->nullable()->comment('options as JSON array [{value, description}]');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -125,8 +125,14 @@ class FormRepository implements FormRepositoryInterface
 
 
 
-    public function delete($id)
+    public function deleteForm(Form $form)
     {
-        return Form::destroy($id);
+        return DB::transaction(function () use ($form) {
+        // Soft delete related form fields
+        $form->fields()->delete();
+
+        // Soft delete the form itself
+        return $form->delete();
+    });
     }
 }

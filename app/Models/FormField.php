@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FormField extends Model
 {
+    use SoftDeletes;
+    
     protected $table = 'form_fields';
 
     // Specify primary key (optional because it's 'id' by default)

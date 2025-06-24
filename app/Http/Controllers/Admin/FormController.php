@@ -82,8 +82,9 @@ class FormController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function deleteForm(Form $form)
     {
-        //
+        $this->formRepo->deleteForm($form);
+        return response()->json(['message' => 'Form deleted successfully']);
     }
 }

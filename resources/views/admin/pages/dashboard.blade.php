@@ -17,20 +17,27 @@
         </thead>
         <tbody>
             @forelse($forms as $form)
-                <tr>
-                    <td class="border px-3 py-2">{{ $form->id }}</td>
-                    <td class="border px-3 py-2">{{ $form->title }}</td>
-                    <td class="border px-3 py-2">{{ $form->description }}</td>
-                    <td class="border px-3 py-2">{{ $form->fields_count }}</td>
-                    <td class="border px-3 py-2">{{ $form->created_at->format('Y-m-d') }}</td>
-                    <td class="border px-3 py-2">
+            <tr>
+                <td class="border px-3 py-2">{{ $form->id }}</td>
+                <td class="border px-3 py-2">{{ $form->title }}</td>
+                <td class="border px-3 py-2">{{ $form->description }}</td>
+                <td class="border px-3 py-2">{{ $form->fields_count }}</td>
+                <td class="border px-3 py-2">{{ $form->created_at->format('Y-m-d') }}</td>
+                <td class="border px-3 py-2">
                     <a href="{{ route('admin.forms.edit', $form) }}" class="text-blue-600 hover:underline">Edit</a>
+                    <button type="button"
+                        class="text-red-600 hover:underline delete-form-btn"
+                        data-id="{{ $form->id }}"
+                        data-url="{{ route('admin.forms.destroy', $form) }}">
+                        Delete
+                    </button>
+
                 </td>
-                </tr>
+            </tr>
             @empty
-                <tr>
-                    <td colspan="5" class="border px-3 py-2 text-center text-gray-500">No forms available.</td>
-                </tr>
+            <tr>
+                <td colspan="5" class="border px-3 py-2 text-center text-gray-500">No forms available.</td>
+            </tr>
             @endforelse
         </tbody>
     </table>
@@ -40,4 +47,7 @@
         {{ $forms->links() }}
     </div>
 </div>
+@endsection
+@section('scripts')
+<script src="{{ asset('page-js/admin/dashboard.js') }}"></script>
 @endsection

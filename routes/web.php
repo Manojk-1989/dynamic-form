@@ -23,6 +23,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::post('/admin/form', [FormController::class, 'createForm'])->name('admin.forms.create');
     Route::get('/admin/{form}/edit', [FormController::class, 'editForm'])->name('admin.forms.edit');
     Route::put('/admin/{form}/edit', [FormController::class, 'updateForm'])->name('admin.forms.update');
+    Route::delete('/admin/{form}/edit', [FormController::class, 'deleteForm'])->name('admin.forms.destroy');
+
 
 
 
