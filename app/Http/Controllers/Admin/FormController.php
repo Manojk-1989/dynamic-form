@@ -4,9 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\FormBuilderRequest;
+use App\Interfaces\FormRepositoryInterface;
+use App\Http\Resources\FormResource;
 
 class FormController extends Controller
 {
+    protected $formRepo;
+
+    public function __construct(FormRepositoryInterface $formRepo)
+    {
+        $this->formRepo = $formRepo;
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -26,9 +37,16 @@ class FormController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function createForm(Request $request)
+    public function createForm(FormBuilderRequest $request)
     {
-        dd($request->all());
+        $validated = $request->validated();
+        $forms = $this->formRepo->create($validated);
+        return response()->json([
+        'status' => 'success',
+        'message' => 'Form created successfully.',
+        'data' => new FormResource($forms),
+    ]);
+        dd($forms);
     }
 
     /**

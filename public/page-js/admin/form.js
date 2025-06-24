@@ -137,23 +137,41 @@ let currentOptionsInput = null;
     // });
 
     // // Show/hide options button based on selected field type
-    $('body').on('change', '.field-type', function () {
-        const $row = $(this).closest('tr');
-        const $btn = $row.find('.btn-options-modal');
-        const $hiddenInput = $row.find('.options-hidden-input');
-        const $summary = $row.find('.options-summary');
+    // $('body').on('change', '.field-type', function () {
+    //     const $row = $(this).closest('tr');
+    //     const $btn = $row.find('.btn-options-modal');
+    //     const $hiddenInput = $row.find('.options-hidden-input');
+    //     const $summary = $row.find('.options-summary');
 
-        if (['select', 'radio', 'checkbox'].includes($(this).val())) {
-            $btn.prop('disabled', false).show();
-            $hiddenInput.prop('disabled', false);
-            $summary.show();
-        } else {
-            $btn.prop('disabled', true).hide();
-            $hiddenInput.prop('disabled', true);
-            $hiddenInput.val('');
-            $summary.hide().text('');
-        }
-    });
+    //     if (['select', 'radio', 'checkbox'].includes($(this).val())) {
+    //         $btn.prop('disabled', false).show();
+    //         $hiddenInput.prop('disabled', false);
+    //         $summary.show();
+    //     } else {
+    //         $btn.prop('disabled', true).hide();
+    //         $hiddenInput.prop('disabled', true);
+    //         $hiddenInput.val('');
+    //         $summary.hide().text('');
+    //     }
+    // });
+    $('body').on('change', '.field-type', function () {
+    const $row = $(this).closest('tr');
+    const $btn = $row.find('.btn-options-modal');
+    const $hiddenInput = $row.find('.options-hidden-input');
+    const $summary = $row.find('.options-summary');
+
+    if (['select', 'radio', 'checkbox'].includes($(this).val())) {
+        $btn.prop('disabled', false).show();
+        $hiddenInput.prop('disabled', false);
+        $summary.show();
+    } else {
+        $btn.prop('disabled', true).hide();
+        $hiddenInput.prop('disabled', false); // IMPORTANT → keep it enabled to submit null
+        $hiddenInput.val('null');             // JSON-compatible null
+        $summary.hide().text('');
+    }
+});
+
 
     // // Trigger change on page load to set button visibility correctly for existing rows
     // $('.field-type').each(function () {
@@ -173,6 +191,7 @@ let currentOptionsInput = null;
 
     $("#createForm").submit(function (e) {
         e.preventDefault();
+        
 alert($(this).attr("action"));
         $("#message").empty();
 

@@ -52,13 +52,13 @@
     <tbody id="templateRow">
         <tr>
             <td class="border p-2">
-                <input type="text" name="fields[][label]" class="w-full border rounded px-2 py-1" required>
+                <input type="text" name="label[]" class="w-full border rounded px-2 py-1" required>
             </td>
             <td class="border p-2">
-                <input type="text" name="fields[][name]" class="w-full border rounded px-2 py-1" required>
+                <input type="text" name="name[]" class="w-full border rounded px-2 py-1" required>
             </td>
             <td class="border p-2">
-                <select name="fields[][type]" class="w-full border rounded px-2 py-1 field-type">
+                <select name="field_type[]" class="w-full border rounded px-2 py-1 field-type">
                     <option value="text">Text</option>
                     <option value="number">Number</option>
                     <option value="textarea">Textarea</option>
@@ -74,11 +74,11 @@
                 <button type="button" class="btn-options-modal bg-gray-200 border rounded px-2 py-1 w-full text-left">
                     Set Options
                 </button>
-                <input type="hidden" name="fields[][options]" class="options-hidden-input" />
+                <input type="hidden" name="options_or_values[]" class="options-hidden-input" />
                 <div class="options-summary text-sm text-gray-600 mt-1"></div>
             </td>
             <td class="border p-2 text-center">
-                <input type="checkbox" name="fields[][required]" value="1">
+                <input type="checkbox" name="required[]" value="1">
             </td>
             <td class="border p-2 text-center">
                 <button type="button" class="text-red-600 removeRowBtn">Delete</button>
