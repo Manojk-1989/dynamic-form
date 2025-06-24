@@ -31,6 +31,9 @@ class FormField extends Model
         'required' => 'boolean',
     ];
 
+    protected $dates = ['deleted_at'];
+
+
     // Relationship to Form
     public function form()
     {

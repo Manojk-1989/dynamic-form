@@ -75,64 +75,72 @@ class FormRepository implements FormRepositoryInterface
     // }
     public function updateForm(Form $form, array $data)
     {
-    return DB::transaction(function () use ($form, $data) {
-        // Update form title/description
-        $form->update([
-            'title' => $data['title'],
-            'description' => $data['description'] ?? null,
-        ]);
+        return DB::transaction(function () use ($form, $data) {
+            // Update form title/description
+            $form->update([
+                'title' => $data['title'],
+                'description' => $data['description'] ?? null,
+            ]);
 
-        // Delete existing form fields
-        $form->fields()->delete();
+            // Delete existing form fields
+            $form->fields()->delete();
 
-        // Prepare bulk insert data
-        $labels     = $data['label'] ?? [];
-        $names      = $data['name'] ?? [];
-        $types      = $data['field_type'] ?? [];
-        $requireds  = $data['required'] ?? [];
-        $optionsArr = $data['options_or_values'] ?? [];
+            // Prepare bulk insert data
+            $labels     = $data['label'] ?? [];
+            $names      = $data['name'] ?? [];
+            $types      = $data['field_type'] ?? [];
+            $requireds  = $data['required'] ?? [];
+            $optionsArr = $data['options_or_values'] ?? [];
 
-        $fieldsToInsert = [];
+            $fieldsToInsert = [];
 
-        foreach ($labels as $index => $label) {
-            $options = null;
+            foreach ($labels as $index => $label) {
+                $options = null;
 
-            if (!empty($optionsArr[$index]) && strtolower($optionsArr[$index]) !== 'null') {
-                $decoded = json_decode($optionsArr[$index], true);
-                $options = is_array($decoded) ? $decoded : null;
+                if (!empty($optionsArr[$index]) && strtolower($optionsArr[$index]) !== 'null') {
+                    $decoded = json_decode($optionsArr[$index], true);
+                    $options = is_array($decoded) ? $decoded : null;
+                }
+
+                $fieldsToInsert[] = [
+                    'form_id'        => $form->id,
+                    'label'          => $label,
+                    'name_attribute' => $names[$index] ?? null,
+                    'element_type'   => $types[$index] ?? null,
+                    'required'       => isset($requireds[$index]) && $requireds[$index] == '1',
+                    'options'        => $options ? json_encode($options) : null,
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ];
             }
 
-            $fieldsToInsert[] = [
-                'form_id'        => $form->id,
-                'label'          => $label,
-                'name_attribute' => $names[$index] ?? null,
-                'element_type'   => $types[$index] ?? null,
-                'required'       => isset($requireds[$index]) && $requireds[$index] == '1',
-                'options'        => $options ? json_encode($options) : null,
-                'created_at'     => now(),
-                'updated_at'     => now(),
-            ];
-        }
+            // Batch insert new fields
+            if (!empty($fieldsToInsert)) {
+                FormField::insert($fieldsToInsert);
+            }
 
-        // Batch insert new fields
-        if (!empty($fieldsToInsert)) {
-            FormField::insert($fieldsToInsert);
-        }
-
-        return $form->fresh('fields');
-    });
-}
+            return $form->fresh('fields');
+        });
+    }
 
 
 
     public function deleteForm(Form $form)
     {
         return DB::transaction(function () use ($form) {
-        // Soft delete related form fields
-        $form->fields()->delete();
+            // Soft delete related form fields
+            $form->fields()->delete();
 
-        // Soft delete the form itself
-        return $form->delete();
-    });
+            // Soft delete the form itself
+            return $form->delete();
+        });
+    }
+
+
+    public function deleteFormField(FormField $formField)
+    {
+        return DB::transaction(function () use ($formField) {
+            return $formField->delete();
+        });
     }
 }

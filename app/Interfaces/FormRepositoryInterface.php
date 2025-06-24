@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-use App\Models\Form;
+use App\Models\{Form, FormField};
 
 interface FormRepositoryInterface
 {
@@ -11,4 +11,8 @@ interface FormRepositoryInterface
     public function create(array $data);
     public function updateForm(Form $form, array $data);
     public function deleteForm(Form $form);
+    public function deleteFormField(FormField $formField);
+
+
+    
 }

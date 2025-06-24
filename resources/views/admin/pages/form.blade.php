@@ -81,7 +81,13 @@
                                        {{ old("required.$index", $field->required) ? 'checked' : '' }}>
                             </td>
                             <td class="border p-2 text-center">
-                                <button type="button" class="text-red-600 removeRowBtn">Delete</button>
+                                <!-- <button type="button" class="text-red-600 removeRowBtn">Delete</button> -->
+                                <button type="button"
+                        class="text-red-600 hover:underline removeRowBtn"
+                        data-id="{{ $field->id }}"
+                        data-url="{{ route('admin.form.element.destroy', $field->id) }}">
+                        Delete
+                    </button>
                             </td>
                         </tr>
                     @endforeach

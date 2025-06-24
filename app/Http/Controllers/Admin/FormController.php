@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\FormBuilderRequest;
 use App\Interfaces\FormRepositoryInterface;
 use App\Http\Resources\FormResource;
-use App\Models\Form;
+use App\Models\{Form, FormField};
 
 class FormController extends Controller
 {
@@ -87,4 +87,16 @@ class FormController extends Controller
         $this->formRepo->deleteForm($form);
         return response()->json(['message' => 'Form deleted successfully']);
     }
+
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function deleteFormElement($fieldId)
+    {
+        $formField = FormField::findOrFail($fieldId);
+        $this->formRepo->deleteFormField($formField);
+        return response()->json(['message' => 'Form deleted successfully']);
+    }
+    
 }
