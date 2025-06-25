@@ -246,7 +246,7 @@ $(document).ready(function () {
     $("#createForm").submit(function (e) {
         e.preventDefault();
 
-        alert($(this).attr("action"));
+        alert('ff');
         $("#message").empty();
 
         $.ajax({
@@ -272,6 +272,7 @@ $(document).ready(function () {
                         }
                     });
                 } else {
+                    alert('not');
                     Swal.fire({
                         icon: "warning",
                         title: "Something went wrong!",
@@ -312,7 +313,11 @@ $(document).ready(function () {
                         }
                     });
                 } else {
-                    console.error("Unexpected error", xhr.responseText);
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Something went wrong!",
+                        text: 'Updation failed' || "Unexpected server response.",
+                    });
                 }
                 // let errors = xhr.responseJSON.errors;
                 // let errorHtml = '<div class="error"><ul>';
@@ -334,12 +339,27 @@ function deleteFormElement(formFieldId, formFieldDeleteUrl) {
         //     _token: '{{ csrf_token() }}'
         // },
         success: function (response) {
-            alert(response.message || "Form deleted successfully");
-            location.reload();
+            Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: response.message || "Form deleted successfully.",
+            showConfirmButton: false,
+            timer: 1500,
+        }).then(() => {
+            // Redirect or reload *after* showing Swal
+            if (response.redirect) {
+                window.location.href = response.redirect;
+            } else {
+                location.reload(); // reload only once
+            }
+        });
         },
         error: function (xhr, status, error) {
-            alert("Error deleting form");
-            console.error(error);
+            Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Something went wrong while deleting.",
+        });
         },
     });
 }

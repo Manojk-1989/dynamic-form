@@ -72,6 +72,15 @@ class FormController extends Controller
         $validated = $request->validated();
 
         $updatedForm = $this->formRepo->updateForm($form, $validated);
+        if (!$updatedForm) {
+            return returnJsonResponse(
+                'failed',
+                'Form updation failed.',
+                null,
+                500
+            );
+        }
+
         return returnJsonResponse(
             'success',
             'Form updated successfully.',
@@ -85,13 +94,21 @@ class FormController extends Controller
      */
     public function deleteForm(Form $form)
     {
-        $this->formRepo->deleteForm($form);
-        return returnJsonResponse(
-            'success',
-            'Form deleted successfully.',
-            null,
-            200
-        );
+        $formDeleted = $this->formRepo->deleteForm($form);
+        // dd($formDeleted);
+        if ($formDeleted) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Form deleted successfully.',
+                'redirect' => route('admin.forms.index'),
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Form deletion failed.',
+            'data' => null
+        ], 500);
     }
 
 
@@ -101,12 +118,18 @@ class FormController extends Controller
     public function deleteFormElement($fieldId)
     {
         $formField = FormField::findOrFail($fieldId);
-        $this->formRepo->deleteFormField($formField);
-        return returnJsonResponse(
-            'success',
-            'Form field deleted successfully.',
-            null,
-            200
-        );
+        $formFieldDeleted = $this->formRepo->deleteFormField($formField);
+        if ($formFieldDeleted) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Form field deleted successfully.',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Form field deletion failed.',
+            'data' => null
+        ], 500);
     }
 }

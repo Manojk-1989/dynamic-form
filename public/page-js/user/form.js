@@ -187,7 +187,6 @@ $(document).ready(function () {
     //     $(this).trigger('change');
     // });
 
-
     $("#addFieldBtn").click(function () {
         var template = $("#templateRow").html();
         $("#fieldsTable tbody").append(template);

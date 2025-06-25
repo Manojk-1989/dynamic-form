@@ -25,12 +25,27 @@ $(document).ready(function () {
             url: url,
             type: "DELETE",
             success: function (response) {
-                alert(response.message || "Form deleted successfully");
-                location.reload();
+                Swal.fire({
+                    icon: "success",
+                    title: "Deleted!",
+                    text: response.message || "Form deleted successfully.",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => {
+                    // Redirect or reload *after* showing Swal
+                    if (response.redirect) {
+                        window.location.href = response.redirect;
+                    } else {
+                        location.reload(); // reload only once
+                    }
+                });
             },
             error: function (xhr, status, error) {
-                alert("Error deleting form");
-                console.error(error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Something went wrong while deleting.",
+                });
             },
         });
     });
