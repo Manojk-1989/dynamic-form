@@ -49,6 +49,8 @@
         <span class="text-danger error-text invalid_credentials_error"></span>
         <button type="submit">Login</button>
     </form>
+
+    <a href="{{ route('register') }}">Admin Register</a>
 </body>
 <script src="{{ asset('page-js/admin/login.js') }}"></script>
 </html>

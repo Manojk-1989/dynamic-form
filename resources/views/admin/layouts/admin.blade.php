@@ -22,9 +22,7 @@
 
             <nav class="flex-1 p-4 space-y-2">
                 <a href="{{ route('admin.dashboard') }}" class="block px-2 py-1 rounded hover:bg-gray-700">Dashboard</a>
-                <a href="{{ route('admin.forms.index') }}" class="block px-2 py-1 rounded hover:bg-gray-700">Forms</a>
-                <a href="{{ route('admin.forms.index') }}" class="block px-2 py-1 rounded hover:bg-gray-700">Submissions</a>
-                <a href="{{ route('admin.forms.index') }}" class="block px-2 py-1 rounded hover:bg-gray-700">Users</a>
+                <a href="{{ route('admin.forms.index') }}" class="block px-2 py-1 rounded hover:bg-gray-700">Create Form</a>
             </nav>
 
             <div class="p-4 border-t border-gray-700">

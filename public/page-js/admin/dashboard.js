@@ -15,7 +15,6 @@ $(document).ready(function () {
     });
 
     $(".delete-form-btn").on("click", function () {
-        alert();
         if (!confirm("Are you sure you want to delete this form?")) return;
 
         const formId = $(this).data("id");
@@ -32,11 +31,10 @@ $(document).ready(function () {
                     showConfirmButton: false,
                     timer: 1500,
                 }).then(() => {
-                    // Redirect or reload *after* showing Swal
                     if (response.redirect) {
                         window.location.href = response.redirect;
                     } else {
-                        location.reload(); // reload only once
+                        location.reload();
                     }
                 });
             },

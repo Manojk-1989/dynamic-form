@@ -23,46 +23,13 @@ $(document).ready(function () {
         `;
     }
 
-    // Open modal on button click
-    // $("body").on("click", ".btn-options-modal", function (e) {
-    //     e.preventDefault();
-    //     currentOptionsInput = $(this).next("input.options-hidden-input");
-    //     currentOptionsSummary = currentOptionsInput.next(".options-summary");
-
-    //     // Clear current rows
-    //     $("#optionsTableBody").empty();
-
-    //     // Load existing options from hidden input (JSON string)
-    //     let optionsData = [];
-    //     try {
-    //         optionsData = JSON.parse(currentOptionsInput.val() || "[]");
-    //     } catch (err) {
-    //         // fallback if not valid JSON, treat as empty
-    //         optionsData = [];
-    //     }
-
-    //     if (optionsData.length === 0) {
-    //         $("#optionsTableBody").append(createOptionRow());
-    //     } else {
-    //         optionsData.forEach((opt) => {
-    //             $("#optionsTableBody").append(
-    //                 createOptionRow(opt.value, opt.description)
-    //             );
-    //         });
-    //     }
-
-    //     // Show modal
-    //     $("#optionsModal").removeClass("hidden");
-    // });
     $("body").on("click", ".btn-options-modal", function (e) {
         e.preventDefault();
         currentOptionsInput = $(this).next("input.options-hidden-input");
         currentOptionsSummary = currentOptionsInput.next(".options-summary");
 
-        // Clear current rows
         $("#optionsTableBody").empty();
 
-        // Load existing options from hidden input (JSON string)
         let optionsData = [];
         let raw = currentOptionsInput.val();
         try {
@@ -135,65 +102,6 @@ $(document).ready(function () {
         $("#optionsModal").addClass("hidden");
     });
 
-    // ------------------------
-    // let currentOptionsInput = null;
-    // let currentOptionsSummary = null;
-
-    // // Open modal on button click
-    // $('body').on('click', '.btn-options-modal', function (e) {
-    //     e.preventDefault();
-    //     currentOptionsInput = $(this).next('input.options-hidden-input');
-    //     currentOptionsSummary = currentOptionsInput.next('.options-summary');
-
-    //     // Load current options into textarea (one per line)
-    //     const options = currentOptionsInput.val() ? currentOptionsInput.val().split(',') : [];
-    //     $('#optionsTextarea').val(options.map(o => o.trim()).join('\n'));
-
-    //     // Show modal
-    //     $('#optionsModal').removeClass('hidden');
-    // });
-
-    // // Close modal
-    // $('#closeOptionsModal').on('click', function () {
-    //     $('#optionsModal').addClass('hidden');
-    // });
-
-    // // Save options from modal
-    // $('#saveOptionsModal').on('click', function () {
-    //     const textarea = $('#optionsTextarea');
-    //     const options = textarea.val()
-    //         .split('\n')
-    //         .map(opt => opt.trim())
-    //         .filter(opt => opt.length > 0);
-
-    //     // Save to hidden input as comma-separated string
-    //     currentOptionsInput.val(options.join(','));
-
-    //     // Update summary text below the button
-    //     currentOptionsSummary.text(options.length ? options.join(', ') : '(No options)');
-
-    //     // Close modal
-    //     $('#optionsModal').addClass('hidden');
-    // });
-
-    // // Show/hide options button based on selected field type
-    // $('body').on('change', '.field-type', function () {
-    //     const $row = $(this).closest('tr');
-    //     const $btn = $row.find('.btn-options-modal');
-    //     const $hiddenInput = $row.find('.options-hidden-input');
-    //     const $summary = $row.find('.options-summary');
-
-    //     if (['select', 'radio', 'checkbox'].includes($(this).val())) {
-    //         $btn.prop('disabled', false).show();
-    //         $hiddenInput.prop('disabled', false);
-    //         $summary.show();
-    //     } else {
-    //         $btn.prop('disabled', true).hide();
-    //         $hiddenInput.prop('disabled', true);
-    //         $hiddenInput.val('');
-    //         $summary.hide().text('');
-    //     }
-    // });
     $("body").on("change", ".field-type", function () {
         const $row = $(this).closest("tr");
         const $btn = $row.find(".btn-options-modal");
@@ -206,23 +114,11 @@ $(document).ready(function () {
             $summary.show();
         } else {
             $btn.prop("disabled", true).hide();
-            $hiddenInput.prop("disabled", false); // IMPORTANT → keep it enabled to submit null
-            $hiddenInput.val("null"); // JSON-compatible null
+            $hiddenInput.prop("disabled", false);
+            $hiddenInput.val("null");
             $summary.hide().text("");
         }
     });
-
-    // // Trigger change on page load to set button visibility correctly for existing rows
-    // $('.field-type').each(function () {
-    //     $(this).trigger('change');
-    // });
-
-    alert("Script form");
-
-    // $("#addFieldBtn").click(function () {
-    //     var template = $("#templateRow").html();
-    //     $("#fieldsTable tbody").append(template);
-    // });
 
     let fieldIndex = $("#fieldsTable tbody tr").length;
 
@@ -246,7 +142,6 @@ $(document).ready(function () {
     $("#createForm").submit(function (e) {
         e.preventDefault();
 
-        alert('ff');
         $("#message").empty();
 
         $.ajax({
@@ -254,7 +149,6 @@ $(document).ready(function () {
             method: $(this).attr("method"),
             data: $(this).serialize(),
             success: function (response) {
-                alert(response.status);
                 if (response.status === "success") {
                     Swal.fire({
                         icon: "success",
@@ -272,7 +166,6 @@ $(document).ready(function () {
                         }
                     });
                 } else {
-                    alert('not');
                     Swal.fire({
                         icon: "warning",
                         title: "Something went wrong!",
@@ -281,20 +174,19 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr) {
-                $(".error-text").remove(); // Remove previous errors
+                $(".error-text").remove();
                 if (xhr.status === 422) {
                     const errors = xhr.responseJSON.errors;
 
                     $.each(errors, function (key, messages) {
                         const message = messages[0];
                         const parts = key.split(".");
-                        const field = parts[0]; // 'title', 'label', 'name'
-                        const index = parts[1]; // e.g., 0, 1 or undefined
+                        const field = parts[0];
+                        const index = parts[1];
 
                         let inputSelector;
 
                         if (index !== undefined) {
-                            // For array fields like label[], name[]
                             inputSelector = `input[name="${field}[]"]`;
                             const $input = $(inputSelector).eq(index);
                             if ($input.length) {
@@ -303,7 +195,6 @@ $(document).ready(function () {
                                 );
                             }
                         } else {
-                            // For single fields like title, description
                             const $input = $(`[name="${field}"]`);
                             if ($input.length) {
                                 $input.after(
@@ -316,16 +207,10 @@ $(document).ready(function () {
                     Swal.fire({
                         icon: "warning",
                         title: "Something went wrong!",
-                        text: 'Updation failed' || "Unexpected server response.",
+                        text:
+                            "Updation failed" || "Unexpected server response.",
                     });
                 }
-                // let errors = xhr.responseJSON.errors;
-                // let errorHtml = '<div class="error"><ul>';
-                // $.each(errors, function (key, value) {
-                //     errorHtml += "<li>" + value[0] + "</li>";
-                // });
-                // errorHtml += "</ul></div>";
-                // $("#message").html(errorHtml);
             },
         });
     });
@@ -335,31 +220,28 @@ function deleteFormElement(formFieldId, formFieldDeleteUrl) {
     $.ajax({
         url: formFieldDeleteUrl,
         type: "DELETE",
-        // data: {
-        //     _token: '{{ csrf_token() }}'
-        // },
+
         success: function (response) {
             Swal.fire({
-            icon: "success",
-            title: "Deleted!",
-            text: response.message || "Form deleted successfully.",
-            showConfirmButton: false,
-            timer: 1500,
-        }).then(() => {
-            // Redirect or reload *after* showing Swal
-            if (response.redirect) {
-                window.location.href = response.redirect;
-            } else {
-                location.reload(); // reload only once
-            }
-        });
+                icon: "success",
+                title: "Deleted!",
+                text: response.message || "Form deleted successfully.",
+                showConfirmButton: false,
+                timer: 1500,
+            }).then(() => {
+                if (response.redirect) {
+                    window.location.href = response.redirect;
+                } else {
+                    location.reload();
+                }
+            });
         },
         error: function (xhr, status, error) {
             Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Something went wrong while deleting.",
-        });
+                icon: "error",
+                title: "Error",
+                text: "Something went wrong while deleting.",
+            });
         },
     });
 }

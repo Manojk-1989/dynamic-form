@@ -31,7 +31,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
 });
 
 Route::prefix('user')->group(function () {
-    Route::get('/form', [FormViewController::class, 'showUserForm']);
+    Route::get('/form', [FormViewController::class, 'showUserForm'])->name('user.forms');
     Route::get('/form/{form}', [FormViewController::class, 'showSelectedUserForm'])->name('user.form.show');
     Route::post('/form/{form}/submit', [FormViewController::class, 'submitUserForm'])->name('user.form.submit');
 });

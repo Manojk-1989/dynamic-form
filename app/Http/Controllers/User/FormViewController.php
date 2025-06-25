@@ -35,7 +35,8 @@ class FormViewController extends Controller
     public function submitUserForm(UserSubmitFormRequest $request, Form $form)
     {
         $validated = $request->validated();
-        $userSubmission = UserSubmittedForm::create([
+        try {
+            $userSubmission = UserSubmittedForm::create([
             'form_id' => $form->id,
             'user_submitted_form_data' => $validated,
         ]);
@@ -45,6 +46,14 @@ class FormViewController extends Controller
             'message' => 'Form submitted successfully!',
             'submission_id' => $userSubmission->id,
         ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+            'status' => 'failed',
+            'message' => 'Form field deletion failed.',
+            'data' => null
+        ], 500);
+        }
+        
     }
 
     

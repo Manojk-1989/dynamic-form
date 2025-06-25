@@ -62,10 +62,10 @@
         <span class="text-danger error error-text password_confirmation_error"></span>
         <button type="submit">Register</button>
     </form>
+    <a href="{{ route('login') }}">Admin Login</a>
 
-    <script>
+    <a href="{{ route('user.forms') }}">User Forms</a>
 
-    </script>
 
 </body>
 <script src="{{ asset('page-js/admin/register.js') }}"></script>

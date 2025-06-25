@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    alert();
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -21,7 +20,7 @@ $(document).ready(function () {
                         '<div class="success">Login successful! Redirecting...</div>'
                     );
                     setTimeout(function () {
-                        window.location.href = response.redirect; // Redirect dynamically based on server response
+                        window.location.href = response.redirect;
                     }, 1500);
                 } else {
                     $("#message").html(
@@ -30,25 +29,21 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr) {
-                $(".error-text").text(""); // Clear all error texts first
+                $(".error-text").text("");
 
                 if (xhr.status === 422) {
-                    // Laravel validation or custom error
                     const errors = xhr.responseJSON.errors;
 
                     if (errors) {
-                        // Validation errors
                         $.each(errors, function (key, value) {
                             $("." + key.replace(/\./g, "_") + "_error").text(
                                 value[0]
                             );
                         });
                     } else if (xhr.responseJSON.message) {
-                        // Custom message like "Invalid credentials"
                         $(".password_error").text(xhr.responseJSON.message);
                     }
                 } else {
-                    // General fallback
                     $(".invalid_credentials_error").text(
                         "Something went wrong. Please try again."
                     );
