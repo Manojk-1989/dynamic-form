@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class SendFormCreatedEmailJob implements ShouldQueue
 {
@@ -29,7 +30,13 @@ class SendFormCreatedEmailJob implements ShouldQueue
      * Execute the job.
      */
     public function handle(): void
-    {dd(true);
-        Mail::to('admin@example.com')->send(new FormCreatedMail($this->form));
+    {
+        try {
+            Log::info('📧 Sending email to admin');
+            Mail::to('manojkumarka99@gmail.com')->send(new FormCreatedMail($this->form));
+            Log::info('Email sent successfully');
+        } catch (\Throwable $th) {
+            Log::error('Error sending email: ' . $th->getMessage());
+        }
     }
 }

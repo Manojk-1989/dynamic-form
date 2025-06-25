@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('form_id')->constrained()->cascadeOnDelete();
             $table->string('label');
-            $table->string('name_attribute')->unique()->nullable();
-            $table->string('id_attribute')->unique()->nullable();
+            $table->string('name_attribute')->nullable();
+            $table->string('id_attribute')->nullable();
             $table->enum('element_type', ['text', 'number', 'textarea', 'select', 'radio', 'checkbox']);
             $table->boolean('required')->default(false);
             $table->json('options')->nullable()->comment('options as JSON array [{value, description}]');

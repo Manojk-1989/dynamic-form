@@ -187,7 +187,6 @@ $(document).ready(function () {
     //     $(this).trigger('change');
     // });
 
-    alert("Script form");
 
     $("#addFieldBtn").click(function () {
         var template = $("#templateRow").html();
@@ -207,7 +206,6 @@ $(document).ready(function () {
     $("#userForm").submit(function (e) {
         e.preventDefault();
 
-        alert($(this).attr("action"));
         $("#message").empty();
 
         $.ajax({
@@ -215,7 +213,6 @@ $(document).ready(function () {
             method: $(this).attr("method"),
             data: $(this).serialize(),
             success: function (response) {
-                alert(response.status);
                 if (response.status === "success") {
                     Swal.fire({
                         icon: "success",

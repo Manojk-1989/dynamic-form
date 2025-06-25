@@ -9,6 +9,7 @@ use App\Interfaces\FormRepositoryInterface;
 use App\Http\Resources\FormResource;
 use App\Models\{Form, FormField};
 use App\Events\FormCreated;
+use App\Jobs\SendFormCreatedEmailJob;
 
 class FormController extends Controller
 {
@@ -35,7 +36,16 @@ class FormController extends Controller
     {
         $validated = $request->validated();
         $forms = $this->formRepo->create($validated);
-        event(new FormCreated($forms));
+        if (!$forms) {
+            return returnJsonResponse(
+                'failed',
+                'Form creation failed.',
+                null,
+                500
+            );
+        }
+        // event(new FormCreated($forms));
+        SendFormCreatedEmailJob::dispatch($forms);
 
         return returnJsonResponse(
             'success',
