@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\{LoginController, RegisterController};
 use App\Http\Controllers\Admin\{FormController, DashboardController};
+use App\Http\Controllers\User\{FormViewController};
 
 
 
@@ -16,6 +17,11 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
+
+Route::get('/form', [FormViewController::class, 'showUserForm']);
+Route::get('/form/{form}', [FormViewController::class, 'showSelectedUserForm'])->name('user.form.show');
+
+Route::post('/form/{form}/submit', [FormViewController::class, 'submitUserForm'])->name('user.form.submit');
 
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
