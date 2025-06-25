@@ -4,15 +4,6 @@
 .env
 .env.*.backup
 
-/storage/*.key
-/storage/*.lock
-/storage/app/public
-/storage/debugbar
-/storage/framework/cache/data
-/storage/framework/sessions
-/storage/framework/views
-/storage/logs/*.log
-
 .idea/
 .vscode/
 *.sublime-project
