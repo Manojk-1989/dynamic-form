@@ -28,6 +28,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::put('/{form}/update', [FormController::class, 'updateForm'])->name('admin.forms.update');
     Route::delete('/{form}/delete', [FormController::class, 'deleteForm'])->name('admin.forms.destroy');
     Route::delete('/{fieldId}/element-delete', [FormController::class, 'deleteFormElement'])->name('admin.form.element.destroy');
+
 });
 
 Route::prefix('user')->group(function () {
