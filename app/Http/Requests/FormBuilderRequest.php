@@ -36,7 +36,7 @@ class FormBuilderRequest extends FormRequest
             'field_type.*' => ['required', Rule::in(['text', 'number', 'textarea', 'select', 'radio', 'checkbox'])],
 
             'required' => ['nullable', 'array'],
-            'required.*' => ['nullable', Rule::in(['1'])],
+            'required.*' => ['nullable', Rule::in(['0', '1'])],
 
             'options_or_values' => ['nullable', 'array'],
             'options_or_values.*' => ['nullable', 'string'],

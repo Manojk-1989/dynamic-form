@@ -24,36 +24,67 @@ $(document).ready(function () {
     }
 
     // Open modal on button click
+    // $("body").on("click", ".btn-options-modal", function (e) {
+    //     e.preventDefault();
+    //     currentOptionsInput = $(this).next("input.options-hidden-input");
+    //     currentOptionsSummary = currentOptionsInput.next(".options-summary");
+
+    //     // Clear current rows
+    //     $("#optionsTableBody").empty();
+
+    //     // Load existing options from hidden input (JSON string)
+    //     let optionsData = [];
+    //     try {
+    //         optionsData = JSON.parse(currentOptionsInput.val() || "[]");
+    //     } catch (err) {
+    //         // fallback if not valid JSON, treat as empty
+    //         optionsData = [];
+    //     }
+
+    //     if (optionsData.length === 0) {
+    //         $("#optionsTableBody").append(createOptionRow());
+    //     } else {
+    //         optionsData.forEach((opt) => {
+    //             $("#optionsTableBody").append(
+    //                 createOptionRow(opt.value, opt.description)
+    //             );
+    //         });
+    //     }
+
+    //     // Show modal
+    //     $("#optionsModal").removeClass("hidden");
+    // });
     $("body").on("click", ".btn-options-modal", function (e) {
-        e.preventDefault();
-        currentOptionsInput = $(this).next("input.options-hidden-input");
-        currentOptionsSummary = currentOptionsInput.next(".options-summary");
+    e.preventDefault();
+    currentOptionsInput = $(this).next("input.options-hidden-input");
+    currentOptionsSummary = currentOptionsInput.next(".options-summary");
 
-        // Clear current rows
-        $("#optionsTableBody").empty();
+    // Clear current rows
+    $("#optionsTableBody").empty();
 
-        // Load existing options from hidden input (JSON string)
-        let optionsData = [];
-        try {
-            optionsData = JSON.parse(currentOptionsInput.val() || "[]");
-        } catch (err) {
-            // fallback if not valid JSON, treat as empty
-            optionsData = [];
-        }
+    // Load existing options from hidden input (JSON string)
+    let optionsData = [];
+    let raw = currentOptionsInput.val();
+    try {
+        optionsData = raw && raw !== "null" ? JSON.parse(raw) : [];
+    } catch (err) {
+        optionsData = [];
+    }
 
-        if (optionsData.length === 0) {
-            $("#optionsTableBody").append(createOptionRow());
-        } else {
-            optionsData.forEach((opt) => {
-                $("#optionsTableBody").append(
-                    createOptionRow(opt.value, opt.description)
-                );
-            });
-        }
+    if (optionsData.length === 0) {
+        $("#optionsTableBody").append(createOptionRow());
+    } else {
+        optionsData.forEach((opt) => {
+            $("#optionsTableBody").append(
+                createOptionRow(opt.value, opt.description)
+            );
+        });
+    }
 
-        // Show modal
-        $("#optionsModal").removeClass("hidden");
-    });
+    // Show modal
+    $("#optionsModal").removeClass("hidden");
+});
+
 
     // Add new empty option row
     $("#addOptionRow").on("click", function () {
@@ -189,10 +220,19 @@ $(document).ready(function () {
 
     alert("Script form");
 
-    $("#addFieldBtn").click(function () {
-        var template = $("#templateRow").html();
-        $("#fieldsTable tbody").append(template);
-    });
+    // $("#addFieldBtn").click(function () {
+    //     var template = $("#templateRow").html();
+    //     $("#fieldsTable tbody").append(template);
+    // });
+
+    let fieldIndex = $("#fieldsTable tbody tr").length;
+
+$("#addFieldBtn").click(function () {
+    var template = $("#templateRow").html();
+    var newRowHtml = template.replace(/__INDEX__/g, fieldIndex);
+    $("#fieldsTable tbody").append(newRowHtml);
+    fieldIndex++;
+});
 
     $("#fieldsTable").on("click", ".removeRowBtn", function () {
         const formFieldId = $(this).data("id");

@@ -6,32 +6,24 @@
         {{ isset($form) ? 'Edit Form' : 'Create New Dynamic Form' }}
     </h2>
 
-    {{-- Create/Edit Form --}}
     <form id="createForm" method="POST" action="{{ isset($form) ? route('admin.forms.update', $form) : route('admin.forms.create') }}">
         @csrf
         @if(isset($form))
             @method('PUT')
-        @endif
-
-        {{-- Hidden input for Form ID (if editing) --}}
-        @if(isset($form))
             <input type="hidden" name="form_id" value="{{ $form->id }}">
         @endif
 
-        {{-- Form Title --}}
         <div class="mb-4">
             <label class="block font-semibold mb-1">Form Title</label>
             <input type="text" name="title" class="w-full border rounded px-3 py-2"
                    value="{{ old('title', $form->title ?? '') }}" required>
         </div>
 
-        {{-- Form Description --}}
         <div class="mb-4">
             <label class="block font-semibold mb-1">Form Description</label>
             <textarea name="description" class="w-full border rounded px-3 py-2" rows="2">{{ old('description', $form->description ?? '') }}</textarea>
         </div>
 
-        {{-- Dynamic Fields Section --}}
         <h3 class="text-lg font-semibold mb-2">Form Fields</h3>
 
         <table class="w-full table-auto border mb-4" id="fieldsTable">
@@ -50,15 +42,15 @@
                     @foreach($form->fields as $index => $field)
                         <tr>
                             <td class="border p-2">
-                                <input type="text" name="label[]" class="w-full border rounded px-2 py-1"
+                                <input type="text" name="label[{{ $index }}]" class="w-full border rounded px-2 py-1"
                                        value="{{ old("label.$index", $field->label) }}" required>
                             </td>
                             <td class="border p-2">
-                                <input type="text" name="name[]" class="w-full border rounded px-2 py-1"
+                                <input type="text" name="name[{{ $index }}]" class="w-full border rounded px-2 py-1"
                                        value="{{ old("name.$index", $field->name_attribute) }}" required>
                             </td>
                             <td class="border p-2">
-                                <select name="field_type[]" class="w-full border rounded px-2 py-1 field-type">
+                                <select name="field_type[{{ $index }}]" class="w-full border rounded px-2 py-1 field-type">
                                     @foreach(['text', 'number', 'textarea', 'select', 'radio', 'checkbox'] as $type)
                                         <option value="{{ $type }}" {{ old("field_type.$index", $field->element_type) == $type ? 'selected' : '' }}>
                                             {{ ucfirst($type) }}
@@ -70,24 +62,24 @@
                                 <button type="button" class="btn-options-modal bg-gray-200 border rounded px-2 py-1 w-full text-left">
                                     Set Options
                                 </button>
-                                <input type="hidden" name="options_or_values[]" class="options-hidden-input"
+                                <input type="hidden" name="options_or_values[{{ $index }}]" class="options-hidden-input"
                                        value="{{ old("options_or_values.$index", json_encode($field->options)) }}">
                                 <div class="options-summary text-sm text-gray-600 mt-1">
                                     {{ is_array($field->options) ? collect($field->options)->pluck('description')->join(', ') : '' }}
                                 </div>
                             </td>
                             <td class="border p-2 text-center">
-                                <input type="checkbox" name="required[]" value="1"
+                                <input type="hidden" name="required[{{ $index }}]" value="0">
+                                <input type="checkbox" name="required[{{ $index }}]" value="1"
                                        {{ old("required.$index", $field->required) ? 'checked' : '' }}>
                             </td>
                             <td class="border p-2 text-center">
-                                <!-- <button type="button" class="text-red-600 removeRowBtn">Delete</button> -->
                                 <button type="button"
-                        class="text-red-600 hover:underline removeRowBtn"
-                        data-id="{{ $field->id }}"
-                        data-url="{{ route('admin.form.element.destroy', $field->id) }}">
-                        Delete
-                    </button>
+                                        class="text-red-600 hover:underline removeRowBtn"
+                                        data-id="{{ $field->id }}"
+                                        data-url="{{ route('admin.form.element.destroy', $field->id) }}">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -105,23 +97,23 @@
     </form>
 </div>
 
-{{-- Template Row (Hidden) --}}
+{{-- Template Row --}}
 <table class="hidden">
     <tbody id="templateRow">
         <tr>
             <td class="border p-2">
-                <input type="text" name="label[]" class="w-full border rounded px-2 py-1" required>
+                <input type="text" name="label[__INDEX__]" class="w-full border rounded px-2 py-1" required>
             </td>
             <td class="border p-2">
-                <input type="text" name="name[]" class="w-full border rounded px-2 py-1" required>
+                <input type="text" name="name[__INDEX__]" class="w-full border rounded px-2 py-1" required>
             </td>
             <td class="border p-2">
-                <select name="field_type[]" class="w-full border rounded px-2 py-1 field-type">
+                <select name="field_type[__INDEX__]" class="w-full border rounded px-2 py-1 field-type">
                     <option value="">Select Field Type</option>
                     <option value="text">Text</option>
                     <option value="number">Number</option>
                     <option value="textarea">Textarea</option>
-                    <option value="select">Select </option>
+                    <option value="select">Select</option>
                     <option value="radio">Radio</option>
                     <option value="checkbox">Checkbox</option>
                 </select>
@@ -130,11 +122,12 @@
                 <button type="button" class="btn-options-modal bg-gray-200 border rounded px-2 py-1 w-full text-left">
                     Set Options
                 </button>
-                <input type="hidden" name="options_or_values[]" class="options-hidden-input" />
+                <input type="hidden" name="options_or_values[__INDEX__]" class="options-hidden-input"  value="null"/>
                 <div class="options-summary text-sm text-gray-600 mt-1"></div>
             </td>
             <td class="border p-2 text-center">
-                <input type="checkbox" name="required[]" value="1">
+                <input type="hidden" name="required[__INDEX__]" value="0">
+                <input type="checkbox" name="required[__INDEX__]" value="1">
             </td>
             <td class="border p-2 text-center">
                 <button type="button" class="text-red-600 removeRowBtn">Delete</button>

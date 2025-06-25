@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Form;
+use App\Http\Requests\UserSubmitFormRequest;
+use App\Models\UserSubmittedForm;
 
 
 class FormViewController extends Controller
@@ -24,15 +26,25 @@ class FormViewController extends Controller
     public function showSelectedUserForm(Form $form)
     {
         $form->load('fields');
-        return view('user.form',compact('form'));
+        return view('user.form', compact('form'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function submitUserForm(Request $request)
+    public function submitUserForm(UserSubmitFormRequest $request, Form $form)
     {
-        //
+        $validated = $request->validated();
+        $userSubmission = UserSubmittedForm::create([
+            'form_id' => $form->id,
+            'user_submitted_form_data' => $validated,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Form submitted successfully!',
+            'submission_id' => $userSubmission->id,
+        ]);
     }
 
     /**
