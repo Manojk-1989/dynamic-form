@@ -4,11 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Admin Login</title>
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,38 +35,20 @@
             margin-bottom: 10px;
         }
     </style>
-
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
-
 </head>
-
 <body>
-
-    <h2>Admin Register</h2>
-
+    <h2>Admin Login</h2>
     <div id="message"></div>
-
     <form id="loginForm" method="POST" action="{{ route('admin.login') }}">
         @csrf
-
-
         <input type="email" class="email" name="email" placeholder="Email" required>
         <span class="text-danger error-text email_error"></span>
-
         <input type="password" class="password" name="password" placeholder="Password" required>
         <span class="text-danger error-text password_error"></span>
         <span class="text-danger error-text invalid_credentials_error"></span>
-
-
-
         <button type="submit">Login</button>
     </form>
-
-    <script>
-
-    </script>
-
 </body>
 <script src="{{ asset('page-js/admin/login.js') }}"></script>
-
 </html>
