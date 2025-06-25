@@ -63,3 +63,7 @@ php artisan migrate
 ### 8. To run the project
 ```bash
 php artisan serve
+
+### 9. Start Queue Worker (for handling emails and background jobs)
+```bash
+php artisan queue:work

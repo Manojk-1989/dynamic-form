@@ -37,6 +37,15 @@
             color: green;
             margin-bottom: 10px;
         }
+         .log-a{
+        display: flex;
+        justify-content: space-between;
+        }
+        .main-log{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
     </style>
 
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
@@ -51,6 +60,8 @@
 
     <form id="registerForm" method="POST" action="{{ route('register') }}">
         @csrf
+<div class="main-log">
+
 
         <input type="text" name="name" placeholder="Name">
         <span class="text-danger error error-text name_error"></span>
@@ -61,10 +72,14 @@
         <input type="password" class="password_confirmation" name="password_confirmation" placeholder="Confirm Password">
         <span class="text-danger error error-text password_confirmation_error"></span>
         <button type="submit">Register</button>
+        </div>
     </form>
-    <a href="{{ route('login') }}">Admin Login</a>
+    <div class="log-a">
+         <a href="{{ route('login') }}">Admin Login</a>
 
     <a href="{{ route('user.forms') }}">User Forms</a>
+    </div>
+   
 
 
 </body>

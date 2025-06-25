@@ -34,6 +34,15 @@
             color: green;
             margin-bottom: 10px;
         }
+        .log-a{
+        display: flex;
+        justify-content: space-between;
+        }
+        .main-log{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
     </style>
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
 </head>
@@ -42,15 +51,21 @@
     <div id="message"></div>
     <form id="loginForm" method="POST" action="{{ route('admin.login') }}">
         @csrf
+        <div class="main-log">
         <input type="email" class="email" name="email" placeholder="Email" required>
         <span class="text-danger error-text email_error"></span>
         <input type="password" class="password" name="password" placeholder="Password" required>
         <span class="text-danger error-text password_error"></span>
         <span class="text-danger error-text invalid_credentials_error"></span>
         <button type="submit">Login</button>
-    </form>
+        </div>
 
+    </form>
+<div class="log-a">
     <a href="{{ route('register') }}">Admin Register</a>
+    <a href="{{ route('user.forms') }}">User Forms</a>
+</div>
+    
 </body>
 <script src="{{ asset('page-js/admin/login.js') }}"></script>
 </html>

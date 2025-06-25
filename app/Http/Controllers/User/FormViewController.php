@@ -16,7 +16,7 @@ class FormViewController extends Controller
      */
     public function showUserForm(Form $forms)
     {
-        $forms = Form::withCount('fields')->latest()->get();
+        $forms = Form::withCount('fields')->latest()->paginate(10);
         return view('user.form-list', compact('forms'));
     }
 

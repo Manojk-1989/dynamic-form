@@ -21,6 +21,11 @@
                 </div>
             @endforeach
         </div>
+
+        <!-- Pagination Links -->
+        <div class="mt-8">
+            {{ $forms->links() }}
+        </div>
     @endif
 </div>
 @endsection

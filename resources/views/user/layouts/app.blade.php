@@ -23,8 +23,8 @@
             </a>
 
             <nav>
-                <a href="" class="text-gray-700 hover:text-blue-600 transition">
-                    Forms
+                <a href="{{route('login')}}" class="text-gray-700 hover:text-blue-600 transition">
+                    Admin Login
                 </a>
             </nav>
         </div>
