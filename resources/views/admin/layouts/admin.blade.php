@@ -21,7 +21,7 @@
             </div>
 
             <nav class="flex-1 p-4 space-y-2">
-                <a href="{{ route('admin.dashboard') }}" class="block px-2 py-1 rounded hover:bg-gray-700">Dashboard</a>
+                <a href="{{ route('admin.dashboard') }}" class="block px-2 py-1 rounded hover:bg-gray-700">Form List</a>
                 <a href="{{ route('admin.forms.index') }}" class="block px-2 py-1 rounded hover:bg-gray-700">Create Form</a>
             </nav>
 
