@@ -19,18 +19,18 @@ A Laravel 11-based dynamic form builder project that allows administrators to cr
 
 ### 1. Clone the Repository
 
-```bash
+
 git clone git@github.com:Manojk-1989/dynamic-form.git
 cd dynamic-form
 
 ### 2. Install PHP Dependencies
 
-```bash
+
 composer install
 
 ### 3. Copy and Configure Environment File
 
-```bash
+
 cp .env.example .env
 
 ### 4. Update the following variables in .env according to your local setup
@@ -52,18 +52,20 @@ MAIL_ENCRYPTION=null
 MAIL_FROM_ADDRESS=
 MAIL_FROM_NAME=
 
+###Open terminal in the project and run follwoing commands
+
 ### 6.Generate Application Key
-```bash
+
 php artisan key:generate
 
 ### 7.Run Migrations
-```bash
+
 php artisan migrate
 
 ### 8. To run the project
-```bash
+
 php artisan serve
 
 ### 9. Start Queue Worker (for handling emails and background jobs)
-```bash
+
 php artisan queue:work
