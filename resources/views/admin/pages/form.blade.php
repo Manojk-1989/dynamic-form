@@ -32,7 +32,7 @@
                     <th class="p-2 border">Label</th>
                     <th class="p-2 border">Field Name</th>
                     <th class="p-2 border">HTML Type</th>
-                    <th class="p-2 border">Placeholder / Options</th>
+                    <th class="p-2 border">Options</th>
                     <th class="p-2 border">Required</th>
                     <th class="p-2 border">Action</th>
                 </tr>
@@ -59,14 +59,18 @@
                                 </select>
                             </td>
                             <td class="border p-2">
-                                <button type="button" class="btn-options-modal bg-gray-200 border rounded px-2 py-1 w-full text-left">
-                                    Set Options
-                                </button>
-                                <input type="hidden" name="options_or_values[{{ $index }}]" class="options-hidden-input"
-                                       value="{{ old("options_or_values.$index", json_encode($field->options)) }}">
-                                <div class="options-summary text-sm text-gray-600 mt-1">
-                                    {{ is_array($field->options) ? collect($field->options)->pluck('description')->join(', ') : '' }}
-                                </div>
+                                @if(in_array($field->element_type, ['select', 'radio', 'checkbox']))
+                                    <button type="button" class="btn-options-modal bg-gray-200 border rounded px-2 py-1 w-full text-left">
+                                        Set Options
+                                    </button>
+                                    <input type="hidden" name="options_or_values[{{ $index }}]" class="options-hidden-input"
+                                           value="{{ old("options_or_values.$index", json_encode($field->options)) }}">
+                                    <div class="options-summary text-sm text-gray-600 mt-1">
+                                        {{ is_array($field->options) ? collect($field->options)->pluck('description')->join(', ') : '' }}
+                                    </div>
+                                @else
+                                    <input type="hidden" name="options_or_values[{{ $index }}]" value="null">
+                                @endif
                             </td>
                             <td class="border p-2 text-center">
                                 <input type="hidden" name="required[{{ $index }}]" value="0">
@@ -122,7 +126,7 @@
                 <button type="button" class="btn-options-modal bg-gray-200 border rounded px-2 py-1 w-full text-left">
                     Set Options
                 </button>
-                <input type="hidden" name="options_or_values[__INDEX__]" class="options-hidden-input"  value="null"/>
+                <input type="hidden" name="options_or_values[__INDEX__]" class="options-hidden-input" value="null"/>
                 <div class="options-summary text-sm text-gray-600 mt-1"></div>
             </td>
             <td class="border p-2 text-center">
