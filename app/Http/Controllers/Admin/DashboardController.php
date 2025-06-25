@@ -23,7 +23,6 @@ class DashboardController extends Controller
     public function index()
     {
         $forms = $this->formRepo->getAllForms();
-        // dd($forms);
         return view('admin.pages.dashboard', compact('forms'));
     }
 

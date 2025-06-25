@@ -8,6 +8,7 @@ use App\Http\Requests\FormBuilderRequest;
 use App\Interfaces\FormRepositoryInterface;
 use App\Http\Resources\FormResource;
 use App\Models\{Form, FormField};
+use App\Events\FormCreated;
 
 class FormController extends Controller
 {
@@ -28,21 +29,14 @@ class FormController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function createForm(FormBuilderRequest $request)
     {
         $validated = $request->validated();
         $forms = $this->formRepo->create($validated);
-        
+        event(new FormCreated($forms));
+
         return returnJsonResponse(
             'success',
             'Form created successfully.',
@@ -52,25 +46,16 @@ class FormController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified form.
      */
     public function editForm(Form $form)
     {
         $form->load('fields');
-        // dd($form);
         return view('admin.pages.form', compact('form'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified form.
      */
     public function updateForm(FormBuilderRequest $request, Form $form)
     {
@@ -86,7 +71,7 @@ class FormController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified form.
      */
     public function deleteForm(Form $form)
     {
@@ -101,7 +86,7 @@ class FormController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified form element.
      */
     public function deleteFormElement($fieldId)
     {
@@ -114,5 +99,4 @@ class FormController extends Controller
             200
         );
     }
-    
 }

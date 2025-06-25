@@ -3,12 +3,17 @@
 namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
+use App\Mail\FormCreatedMail;
 use App\Models\Form;
+use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class SendFormCreatedEmailJob implements ShouldQueue
 {
-    use Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $form;
 
@@ -24,7 +29,7 @@ class SendFormCreatedEmailJob implements ShouldQueue
      * Execute the job.
      */
     public function handle(): void
-    {
+    {dd(true);
         Mail::to('admin@example.com')->send(new FormCreatedMail($this->form));
     }
 }

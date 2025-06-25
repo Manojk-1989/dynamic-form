@@ -10,6 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Form;
+use Illuminate\Support\Facades\Log;
 
 class FormCreated
 {
@@ -23,6 +24,7 @@ class FormCreated
     public function __construct(Form $form)
     {
         $this->form = $form;
+        Log::info('FormCreated event fired for form id: ' . $form->id);
     }
 
     /**
