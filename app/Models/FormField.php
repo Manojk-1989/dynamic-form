@@ -11,10 +11,8 @@ class FormField extends Model
     
     protected $table = 'form_fields';
 
-    // Specify primary key (optional because it's 'id' by default)
     protected $primaryKey = 'id';
 
-    // Mass assignable attributes
     protected $fillable = [
         'form_id',
         'label',
@@ -25,7 +23,6 @@ class FormField extends Model
         'options',
     ];
 
-    // Cast 'options' JSON column to array automatically
     protected $casts = [
         'options' => 'array',
         'required' => 'boolean',
@@ -34,7 +31,6 @@ class FormField extends Model
     protected $dates = ['deleted_at'];
 
 
-    // Relationship to Form
     public function form()
     {
         return $this->belongsTo(Form::class);
