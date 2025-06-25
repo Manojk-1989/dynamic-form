@@ -55,36 +55,35 @@ $(document).ready(function () {
     //     $("#optionsModal").removeClass("hidden");
     // });
     $("body").on("click", ".btn-options-modal", function (e) {
-    e.preventDefault();
-    currentOptionsInput = $(this).next("input.options-hidden-input");
-    currentOptionsSummary = currentOptionsInput.next(".options-summary");
+        e.preventDefault();
+        currentOptionsInput = $(this).next("input.options-hidden-input");
+        currentOptionsSummary = currentOptionsInput.next(".options-summary");
 
-    // Clear current rows
-    $("#optionsTableBody").empty();
+        // Clear current rows
+        $("#optionsTableBody").empty();
 
-    // Load existing options from hidden input (JSON string)
-    let optionsData = [];
-    let raw = currentOptionsInput.val();
-    try {
-        optionsData = raw && raw !== "null" ? JSON.parse(raw) : [];
-    } catch (err) {
-        optionsData = [];
-    }
+        // Load existing options from hidden input (JSON string)
+        let optionsData = [];
+        let raw = currentOptionsInput.val();
+        try {
+            optionsData = raw && raw !== "null" ? JSON.parse(raw) : [];
+        } catch (err) {
+            optionsData = [];
+        }
 
-    if (optionsData.length === 0) {
-        $("#optionsTableBody").append(createOptionRow());
-    } else {
-        optionsData.forEach((opt) => {
-            $("#optionsTableBody").append(
-                createOptionRow(opt.value, opt.description)
-            );
-        });
-    }
+        if (optionsData.length === 0) {
+            $("#optionsTableBody").append(createOptionRow());
+        } else {
+            optionsData.forEach((opt) => {
+                $("#optionsTableBody").append(
+                    createOptionRow(opt.value, opt.description)
+                );
+            });
+        }
 
-    // Show modal
-    $("#optionsModal").removeClass("hidden");
-});
-
+        // Show modal
+        $("#optionsModal").removeClass("hidden");
+    });
 
     // Add new empty option row
     $("#addOptionRow").on("click", function () {
@@ -227,12 +226,12 @@ $(document).ready(function () {
 
     let fieldIndex = $("#fieldsTable tbody tr").length;
 
-$("#addFieldBtn").click(function () {
-    var template = $("#templateRow").html();
-    var newRowHtml = template.replace(/__INDEX__/g, fieldIndex);
-    $("#fieldsTable tbody").append(newRowHtml);
-    fieldIndex++;
-});
+    $("#addFieldBtn").click(function () {
+        var template = $("#templateRow").html();
+        var newRowHtml = template.replace(/__INDEX__/g, fieldIndex);
+        $("#fieldsTable tbody").append(newRowHtml);
+        fieldIndex++;
+    });
 
     $("#fieldsTable").on("click", ".removeRowBtn", function () {
         const formFieldId = $(this).data("id");
@@ -254,60 +253,67 @@ $("#addFieldBtn").click(function () {
             url: $(this).attr("action"),
             method: $(this).attr("method"),
             data: $(this).serialize(),
-            success: function (response) {alert(response.status)
+            success: function (response) {
+                alert(response.status);
                 if (response.status === "success") {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: response.message || 'Operation completed successfully.',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    if (response.redirect) {
-                        window.location.href = response.redirect;
-                    } else {
-                        location.reload(); 
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Something went wrong!',
-                    text: response.message || 'Unexpected server response.'
-                });
-            }
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success!",
+                        text:
+                            response.message ||
+                            "Operation completed successfully.",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(() => {
+                        if (response.redirect) {
+                            window.location.href = response.redirect;
+                        } else {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Something went wrong!",
+                        text: response.message || "Unexpected server response.",
+                    });
+                }
             },
             error: function (xhr) {
                 $(".error-text").remove(); // Remove previous errors
-    if (xhr.status === 422) {
-        const errors = xhr.responseJSON.errors;
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
 
-        $.each(errors, function (key, messages) {
-            const message = messages[0];
-            const parts = key.split(".");
-            const field = parts[0]; // 'title', 'label', 'name'
-            const index = parts[1]; // e.g., 0, 1 or undefined
+                    $.each(errors, function (key, messages) {
+                        const message = messages[0];
+                        const parts = key.split(".");
+                        const field = parts[0]; // 'title', 'label', 'name'
+                        const index = parts[1]; // e.g., 0, 1 or undefined
 
-            let inputSelector;
+                        let inputSelector;
 
-            if (index !== undefined) {
-                // For array fields like label[], name[]
-                inputSelector = `input[name="${field}[]"]`;
-                const $input = $(inputSelector).eq(index);
-                if ($input.length) {
-                    $input.after(`<span class="text-danger error-text text-sm">${message}</span>`);
+                        if (index !== undefined) {
+                            // For array fields like label[], name[]
+                            inputSelector = `input[name="${field}[]"]`;
+                            const $input = $(inputSelector).eq(index);
+                            if ($input.length) {
+                                $input.after(
+                                    `<span class="text-danger error-text text-sm">${message}</span>`
+                                );
+                            }
+                        } else {
+                            // For single fields like title, description
+                            const $input = $(`[name="${field}"]`);
+                            if ($input.length) {
+                                $input.after(
+                                    `<span class="text-danger error-text text-sm">${message}</span>`
+                                );
+                            }
+                        }
+                    });
+                } else {
+                    console.error("Unexpected error", xhr.responseText);
                 }
-            } else {
-                // For single fields like title, description
-                const $input = $(`[name="${field}"]`);
-                if ($input.length) {
-                    $input.after(`<span class="text-danger error-text text-sm">${message}</span>`);
-                }
-            }
-        });
-    } else {
-        console.error("Unexpected error", xhr.responseText);
-    }
                 // let errors = xhr.responseJSON.errors;
                 // let errorHtml = '<div class="error"><ul>';
                 // $.each(errors, function (key, value) {
@@ -322,18 +328,18 @@ $("#addFieldBtn").click(function () {
 
 function deleteFormElement(formFieldId, formFieldDeleteUrl) {
     $.ajax({
-            url: formFieldDeleteUrl,
-            type: "DELETE",
-            // data: {
-            //     _token: '{{ csrf_token() }}'
-            // },
-            success: function (response) {
-                alert(response.message || "Form deleted successfully");
-                location.reload();
-            },
-            error: function (xhr, status, error) {
-                alert("Error deleting form");
-                console.error(error);
-            },
-        });
+        url: formFieldDeleteUrl,
+        type: "DELETE",
+        // data: {
+        //     _token: '{{ csrf_token() }}'
+        // },
+        success: function (response) {
+            alert(response.message || "Form deleted successfully");
+            location.reload();
+        },
+        error: function (xhr, status, error) {
+            alert("Error deleting form");
+            console.error(error);
+        },
+    });
 }

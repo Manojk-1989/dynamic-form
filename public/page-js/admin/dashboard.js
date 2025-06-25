@@ -24,9 +24,6 @@ $(document).ready(function () {
         $.ajax({
             url: url,
             type: "DELETE",
-            // data: {
-            //     _token: '{{ csrf_token() }}'
-            // },
             success: function (response) {
                 alert(response.message || "Form deleted successfully");
                 location.reload();

@@ -1,4 +1,4 @@
-$(document).ready(function () {alert();
+$(document).ready(function () {
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -214,67 +214,67 @@ $(document).ready(function () {alert();
             url: $(this).attr("action"),
             method: $(this).attr("method"),
             data: $(this).serialize(),
-            success: function (response) {alert(response.status)
+            success: function (response) {
+                alert(response.status);
                 if (response.status === "success") {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: response.message || 'Operation completed successfully.',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    if (response.redirect) {
-                        window.location.href = response.redirect;
-                    } else {
-                        location.reload(); 
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Something went wrong!',
-                    text: response.message || 'Unexpected server response.'
-                });
-            }
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success!",
+                        text:
+                            response.message ||
+                            "Operation completed successfully.",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(() => {
+                        if (response.redirect) {
+                            window.location.href = response.redirect;
+                        } else {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Something went wrong!",
+                        text: response.message || "Unexpected server response.",
+                    });
+                }
             },
             error: function (xhr) {
                 $(".error-text").remove(); // Remove previous errors
-    if (xhr.status === 422) {
-        const errors = xhr.responseJSON.errors;
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
 
-        $.each(errors, function (key, messages) {
-            const message = messages[0];
-            const parts = key.split(".");
-            const field = parts[0]; // 'title', 'label', 'name'
-            const index = parts[1]; // e.g., 0, 1 or undefined
+                    $.each(errors, function (key, messages) {
+                        const message = messages[0];
+                        const parts = key.split(".");
+                        const field = parts[0];
+                        const index = parts[1];
 
-            let inputSelector;
+                        let inputSelector;
 
-            if (index !== undefined) {
-                // For array fields like label[], name[]
-                inputSelector = `input[name="${field}[]"]`;
-                const $input = $(inputSelector).eq(index);
-                if ($input.length) {
-                    $input.after(`<span class="text-danger error-text text-sm">${message}</span>`);
+                        if (index !== undefined) {
+                            // For array fields like label[], name[]
+                            inputSelector = `input[name="${field}[]"]`;
+                            const $input = $(inputSelector).eq(index);
+                            if ($input.length) {
+                                $input.after(
+                                    `<span class="text-danger error-text text-sm">${message}</span>`
+                                );
+                            }
+                        } else {
+                            // For single fields like title, description
+                            const $input = $(`[name="${field}"]`);
+                            if ($input.length) {
+                                $input.after(
+                                    `<span class="text-danger error-text text-sm">${message}</span>`
+                                );
+                            }
+                        }
+                    });
+                } else {
+                    console.error("Unexpected error", xhr.responseText);
                 }
-            } else {
-                // For single fields like title, description
-                const $input = $(`[name="${field}"]`);
-                if ($input.length) {
-                    $input.after(`<span class="text-danger error-text text-sm">${message}</span>`);
-                }
-            }
-        });
-    } else {
-        console.error("Unexpected error", xhr.responseText);
-    }
-                // let errors = xhr.responseJSON.errors;
-                // let errorHtml = '<div class="error"><ul>';
-                // $.each(errors, function (key, value) {
-                //     errorHtml += "<li>" + value[0] + "</li>";
-                // });
-                // errorHtml += "</ul></div>";
-                // $("#message").html(errorHtml);
             },
         });
     });
@@ -282,18 +282,16 @@ $(document).ready(function () {alert();
 
 function deleteFormElement(formFieldId, formFieldDeleteUrl) {
     $.ajax({
-            url: formFieldDeleteUrl,
-            type: "DELETE",
-            // data: {
-            //     _token: '{{ csrf_token() }}'
-            // },
-            success: function (response) {
-                alert(response.message || "Form deleted successfully");
-                location.reload();
-            },
-            error: function (xhr, status, error) {
-                alert("Error deleting form");
-                console.error(error);
-            },
-        });
+        url: formFieldDeleteUrl,
+        type: "DELETE",
+
+        success: function (response) {
+            alert(response.message || "Form deleted successfully");
+            location.reload();
+        },
+        error: function (xhr, status, error) {
+            alert("Error deleting form");
+            console.error(error);
+        },
+    });
 }
